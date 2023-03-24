@@ -8,7 +8,7 @@ exports.validateSignup = (req, res, next) => {
       return res.status(400).json({ message: "Last name is required" });
     case !email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email):
       return res.status(400).json({ message: "Enter a valid email address" });
-    case !password || !password < 6:
+    case !password || !password > 5:
       return res
         .status(400)
         .json({ message: "password must be greater 5 characters" });
