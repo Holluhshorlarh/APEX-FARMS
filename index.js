@@ -4,6 +4,8 @@ const cors = require("cors");
 const helmet = require("helmet");
 const connDB = require("./config/db");
 
+const userRouter = require("./routes/user.routes");
+
 const app = express();
 
 app.use(express.json());
@@ -16,6 +18,8 @@ connDB();
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Welcome to Apex-farms 😊" });
 });
+
+app.use("/api/v1", userRouter);
 
 port = process.env.PORT;
 
