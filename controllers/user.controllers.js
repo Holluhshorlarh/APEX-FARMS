@@ -25,7 +25,6 @@ exports.signUp = async (req, res) => {
       status: "Success",
       message: `${user.firstName} account created successfully`,
       "user Id": user._id,
-      "first name": user.firstName,
       email: user.email,
     });
   } catch (error) {
