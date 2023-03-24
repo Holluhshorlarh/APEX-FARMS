@@ -1,0 +1,32 @@
+{
+  "name": "apex-farms",
+  "version": "1.0.0",
+  "description": "Apex-farms API Endpoints",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://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@github.com/Holluhshorlarh/APEX-FARMS.git"
+  },
+  "keywords": [
+    "farms",
+    "API",
+    "Apex-farms"
+  ],
+  "author": "Ajayi Gabriel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Holluhshorlarh/APEX-FARMS/issues"
+  },
+  "homepage": "https://github.com/Holluhshorlarh/APEX-FARMS#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.0.3"
+  }
+}
