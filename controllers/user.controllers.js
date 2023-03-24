@@ -23,7 +23,7 @@ exports.signUp = async (req, res) => {
     });
     return res.status(201).json({
       status: "Success",
-      message: `${user.firstName} account created successfuly`,
+      message: `${user.firstName} account created successfully`,
       "user Id": user._id,
       "first name": user.firstName,
       email: user.email,
