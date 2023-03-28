@@ -1,10 +1,12 @@
 const bcrypt = require("bcrypt");
-const User = require("../models/user.models");
+const prisma = require("../config/prisma");
 
 exports.signUp = async (req, res) => {
-  const { firstName, lastName, email, password } = req.body;
+  const { firstname, lastname, email, password } = req.body;
   try {
-    const userExist = await User.findOne({ email });
+    const userExist = await prisma.person.findUnique({
+      where: { email },
+    });
     if (userExist) {
       return res
         .status(400)
@@ -15,16 +17,18 @@ exports.signUp = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashpwd = await bcrypt.hash(password, salt);
 
-    const user = await User.create({
-      firstName,
-      lastName,
-      email,
-      password: hashpwd,
+    const user = await prisma.person.create({
+      data: {
+        firstname,
+        lastname,
+        email,
+        password: hashpwd,
+      },
     });
     return res.status(201).json({
       status: "Success",
-      message: `${user.firstName} account created successfully`,
-      "user Id": user._id,
+      message: `${user.firstname} account created successfully`,
+      "user Id": user.id,
       email: user.email,
     });
   } catch (error) {

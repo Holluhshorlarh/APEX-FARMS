@@ -2,7 +2,6 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
-const connDB = require("./config/db");
 
 const userRouter = require("./routes/user.routes");
 
@@ -12,8 +11,6 @@ app.use(express.json());
 
 app.use(cors());
 app.use(helmet());
-
-connDB();
 
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Welcome to Apex-farms 😊" });
