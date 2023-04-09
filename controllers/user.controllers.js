@@ -1,13 +1,11 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const prisma = require("../config/prisma");
+const AppServices = require("../services/app.service");
 
 exports.signUp = async (req, res) => {
-  const { firstname, lastname, email, password } = req.body;
+  let { firstname, lastname, email, password } = req.body;
   try {
-    const userExist = await prisma.person.findUnique({
-      where: { email },
-    });
+    const userExist = await AppServices.findByEmail(email);
     if (userExist) {
       return res
         .status(400)
@@ -16,16 +14,11 @@ exports.signUp = async (req, res) => {
 
     // hash password
     const salt = await bcrypt.genSalt(10);
-    const hashpwd = await bcrypt.hash(password, salt);
+    const pwdhash = await bcrypt.hash(password, salt);
+    password = pwdhash;
 
-    const user = await prisma.person.create({
-      data: {
-        firstname,
-        lastname,
-        email,
-        password: hashpwd,
-      },
-    });
+    let payload = { firstname, lastname, email, password };
+    const user = await AppServices.createUser(payload);
     return res.status(201).json({
       status: "Success",
       message: `${user.firstname} account created successfully`,
@@ -33,6 +26,7 @@ exports.signUp = async (req, res) => {
       email: user.email,
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ status: "Failed", message: error.message });
   }
 };
@@ -40,7 +34,7 @@ exports.signUp = async (req, res) => {
 exports.login = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await prisma.person.findUnique({ where: { email } });
+    const user = await AppServices.findByEmail(email);
     if (!user) {
       return res
         .status(400)
@@ -54,7 +48,7 @@ exports.login = async (req, res) => {
 
     const tokenData = {
       id: user.id,
-      email: email.id,
+      email: user.email,
       role: user.role,
     };
 
