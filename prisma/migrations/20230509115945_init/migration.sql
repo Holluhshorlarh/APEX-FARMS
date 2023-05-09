@@ -41,6 +41,7 @@ CREATE TABLE "product_review" (
 -- CreateTable
 CREATE TABLE "cart" (
     "id" TEXT NOT NULL,
+    "quantity" INTEGER NOT NULL,
     "product_id" TEXT NOT NULL,
     "person_id" TEXT NOT NULL,
 

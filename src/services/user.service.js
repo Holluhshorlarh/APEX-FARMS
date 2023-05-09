@@ -1,6 +1,6 @@
 const prisma = require("../config/prisma");
 
-const AppServices = {
+const UserServices = {
   findByEmail: async (email) => {
     const result = await prisma.person.findUnique({ where: { email } });
     return result;
@@ -17,4 +17,4 @@ const AppServices = {
   },
 };
 
-module.exports = AppServices;
+module.exports = UserServices;

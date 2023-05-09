@@ -30,3 +30,5 @@ exports.validateLogin = (req, res, next) => {
     next();
   }
 };
+
+exports.validateAddProducts = (req, res, next) => {};

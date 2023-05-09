@@ -51,6 +51,7 @@ model ProductReview {
 
 model Cart {
   id         String  @id @default(uuid())
+  quantity   Int
   product    Product @relation("product_cart", fields: [product_id], references: [id])
   product_id String  @unique
   person     Person  @relation("person_cart", fields: [person_id], references: [id])

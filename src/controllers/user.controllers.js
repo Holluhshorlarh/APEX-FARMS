@@ -1,11 +1,11 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const AppServices = require("../services/app.service");
+const UserServices = require("../services/user.service");
 
 exports.signUp = async (req, res) => {
   let { firstname, lastname, email, password } = req.body;
   try {
-    const userExist = await AppServices.findByEmail(email);
+    const userExist = await UserServices.findByEmail(email);
     if (userExist) {
       return res
         .status(400)
@@ -18,7 +18,7 @@ exports.signUp = async (req, res) => {
     password = pwdhash;
 
     let payload = { firstname, lastname, email, password };
-    const user = await AppServices.createUser(payload);
+    const user = await UserServices.createUser(payload);
     return res.status(201).json({
       status: "Success",
       message: `${user.firstname} account created successfully`,
@@ -34,7 +34,7 @@ exports.signUp = async (req, res) => {
 exports.login = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await AppServices.findByEmail(email);
+    const user = await UserServices.findByEmail(email);
     if (!user) {
       return res
         .status(400)
@@ -52,7 +52,7 @@ exports.login = async (req, res) => {
       role: user.role,
     };
 
-    const token = await jwt.sign(tokenData, process.env.JWT_SECRET, {
+    const token = jwt.sign(tokenData, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRE,
     });
 
