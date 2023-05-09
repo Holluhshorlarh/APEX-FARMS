@@ -31,4 +31,19 @@ exports.validateLogin = (req, res, next) => {
   }
 };
 
-exports.validateAddProducts = (req, res, next) => {};
+exports.validateAddProducts = (req, res, next) => {
+  const { name, category, quantity, price } = req.body;
+
+  switch (true) {
+    case !name:
+      return res.status(400).json({ message: "product name is required" });
+    case !category:
+      return res.status(400).json({ message: "product category is required" });
+    case !quantity:
+      return res.status(400).json({ message: "product quantity is required" });
+    case !price:
+      return res.status(400).json({ message: "product price is required" });
+    default:
+      next();
+  }
+};

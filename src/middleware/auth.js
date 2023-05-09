@@ -16,3 +16,9 @@ const isAuth = (req, res, next) => {
       .json({ error: error.message, message: "Authentication failed" });
   }
 };
+
+const isAdmin = (req, res, next) => {
+  if (req.user.roles !== "admin")
+    res.status(403).json({ message: "Oops sorry you're not an admin" });
+  next();
+};
