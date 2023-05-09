@@ -11,50 +11,71 @@ datasource db {
 }
 
 model Person {
-  id        String    @id @default(uuid())
-  firstname String    @db.VarChar(20)
-  lastname  String    @db.VarChar(20)
-  email     String    @unique
-  password  String
-  role      Role      @default(user)
-  products  Product[] @relation("person_product")
-  orders    Order[]   @relation("person_order")
+  id             String          @id @default(uuid())
+  firstname      String          @db.VarChar(20)
+  lastname       String          @db.VarChar(20)
+  email          String          @unique
+  password       String
+  roles          role_enum       @default(users)
+  orders         Orders[]        @relation("person_order")
+  cart           Cart[]          @relation("person_cart")
+  product_review ProductReview[] @relation("product_review_person")
 
   @@map("person")
 }
 
 model Product {
-  id        String   @id @default(uuid())
-  name      String   @db.VarChar(20)
-  category  Category @default(others)
-  quantity  Int
-  price     Int
-  likes     Boolean  @default(false)
-  person    Person   @relation("person_product", fields: [person_id], references: [id])
-  person_id String   @unique
-  orders    Order[]
+  id             String          @id @default(uuid())
+  name           String          @db.VarChar(20)
+  category       categories      @default(others)
+  quantity       Int
+  price          Int
+  orders         Orders[]        @relation("product_orders")
+  cart           Cart[]          @relation("product_cart")
+  product_review ProductReview[] @relation("product_review")
 
   @@map("product")
 }
 
-model Order {
+model ProductReview {
   id         String  @id @default(uuid())
-  quantity   Int
+  likes      Boolean @default(false)
+  review     String?
+  product    Product @relation("product_review", fields: [product_id], references: [id])
+  product_id String  @unique
+  person     Person  @relation("product_review_person", fields: [person_id], references: [id])
+  person_id  String  @unique
+
+  @@map("product_review")
+}
+
+model Cart {
+  id         String  @id @default(uuid())
+  product    Product @relation("product_cart", fields: [product_id], references: [id])
+  product_id String  @unique
+  person     Person  @relation("person_cart", fields: [person_id], references: [id])
+  person_id  String  @unique
+
+  @@map("cart")
+}
+
+model Orders {
+  id         String  @id @default(uuid())
   amount     Int
   person     Person  @relation("person_order", fields: [person_id], references: [id])
   person_id  String  @unique
-  product    Product @relation(fields: [product_id], references: [id])
+  product    Product @relation("product_orders", fields: [product_id], references: [id])
   product_id String  @unique
 
-  @@map("order")
+  @@map("orders")
 }
 
-enum Role {
-  user
+enum role_enum {
+  users
   admin
 }
 
-enum Category {
+enum categories {
   vegetables
   fruits
   beef
