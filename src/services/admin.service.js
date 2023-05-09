@@ -6,9 +6,9 @@ const AdminService = {
     return result;
   },
 
-  findProduct: async (productName, category) => {
+  findProduct: async (name, category) => {
     const result = await prisma.product.findFirst({
-      where: { productName, category },
+      where: { name, category },
     });
     return result;
   },

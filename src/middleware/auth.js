@@ -1,4 +1,6 @@
-const isAuth = (req, res, next) => {
+const jwt = require("jsonwebtoken");
+
+exports.isAuth = (req, res, next) => {
   try {
     const token = req.headers.authorization.split(" ")[1];
     if (!token)
@@ -17,8 +19,16 @@ const isAuth = (req, res, next) => {
   }
 };
 
-const isAdmin = (req, res, next) => {
-  if (req.user.roles !== "admin")
-    res.status(403).json({ message: "Oops sorry you're not an admin" });
-  next();
+exports.isAdmin = (req, res, next) => {
+  try {
+    if (req.user.roles !== "admin")
+      return res
+        .status(403)
+        .json({ message: "Oops sorry you're not an admin" });
+    next();
+  } catch (error) {
+    return res
+      .status(403)
+      .json({ error: error.mesage, message: "Authentication failed" });
+  }
 };
