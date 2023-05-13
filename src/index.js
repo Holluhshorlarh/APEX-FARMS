@@ -4,6 +4,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 const userRouter = require("./routes/user.routes");
 const adminRouter = require("./routes/admin.routes");
+const productRouter = require("./routes/product.routes");
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/v1", userRouter);
 app.use("/api/v1", adminRouter);
+app.use("/api/v1", productRouter);
 
 port = process.env.PORT;
 
